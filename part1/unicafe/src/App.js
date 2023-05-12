@@ -12,18 +12,15 @@ const Feedback = (props) => {
 }
 
 const Statistics = (props) => {
-  let average;
   if (props.good + props.neutral + props.bad === 0) {
-    average = <p>average 0</p>
-  } else {
-    average = <p>average {(props.good - props.bad) / (props.good + props.neutral + props.bad)}</p>
+    return (
+      <div>
+        <h1>statistics</h1>
+        No feedback given
+      </div>
+    )
   }
-  let positive;
-  if (props.good === 0) {
-    positive = <p>positive 0%</p>
-  } else {
-    positive = <p>positive {props.good / (props.good + props.neutral + props.bad) * 100}%</p>
-  }
+
   return (
     <div>
       <h1>statistics</h1>
@@ -31,8 +28,8 @@ const Statistics = (props) => {
       <p>neutral {props.neutral}</p>
       <p>bad {props.bad}</p>
       <p>all {props.good + props.neutral + props.bad}</p>
-      {average}
-      {positive}
+      <p>average {(props.good - props.bad) / (props.good + props.neutral + props.bad)}</p>
+      <p>positive {props.good / (props.good + props.neutral + props.bad) * 100}%</p>
     </div>
   )
 }
