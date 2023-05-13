@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+
+import { getAll } from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -15,9 +16,7 @@ const App = () => {
 
   // get data from server
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    getAll().then(data => setPersons(data))
   }, [])
 
   const handleNameChange = (event) => {

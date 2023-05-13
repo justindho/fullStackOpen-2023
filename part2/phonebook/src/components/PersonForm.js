@@ -1,3 +1,5 @@
+import { create } from '../services/persons'
+
 const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, handleNumberChange}) => {
 
   const addPhonebookEntry = (event) => {
@@ -10,6 +12,9 @@ const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, 
         name: newName,
         number: newNumber
       }
+
+      create(newPerson)
+        .then(response => console.log(response))
   
       const newPersons = persons.concat(newPerson)
       setPersons(newPersons)
