@@ -1,12 +1,23 @@
-import { create } from '../services/persons'
+import { create, update } from '../services/persons'
 
 const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, handleNumberChange}) => {
 
   const addPhonebookEntry = (event) => {
     event.preventDefault()
 
-    if (persons.find(person => person.name === newName) !== undefined) {
-      alert(`${newName} is already added to phonebook`)
+    let foundPerson
+
+    if ((foundPerson = persons.find(person => person.name === newName)) !== undefined) {
+      alert(`${newName} is already added to phonebook, replace the older number with a new one?`)
+      const updatedPerson = {
+        ...foundPerson,
+        name: newName,
+        number: newNumber,
+      }
+      update(foundPerson.id, updatedPerson)
+      const newPersons = [...persons]
+      newPersons[foundPerson.id - 1] = updatedPerson
+      setPersons(newPersons)
     } else {
       const newPerson = {
         name: newName,
