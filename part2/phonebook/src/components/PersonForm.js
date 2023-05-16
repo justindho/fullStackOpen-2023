@@ -1,6 +1,6 @@
 import { create, update } from '../services/persons'
 
-const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, handleNumberChange}) => {
+const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, handleNumberChange, setNewMessage}) => {
 
   const addPhonebookEntry = (event) => {
     event.preventDefault()
@@ -15,6 +15,13 @@ const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, 
         number: newNumber,
       }
       update(foundPerson.id, updatedPerson)
+        .then(response => {
+          console.log(response)
+          setNewMessage(`Updated ${response.data.name}`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
+        })
       const newPersons = [...persons]
       newPersons[foundPerson.id - 1] = updatedPerson
       setPersons(newPersons)
@@ -26,7 +33,13 @@ const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, 
       }
 
       create(newPerson)
-        .then(response => console.log(response))
+        .then(response => {
+          console.log(response)
+          setNewMessage(`Added ${response.data.name}`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
+        })
   
       const newPersons = persons.concat(newPerson)
       setPersons(newPersons)

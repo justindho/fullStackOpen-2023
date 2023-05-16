@@ -7,7 +7,6 @@ const Person = ({person, setPersons}) => {
       .then(persons => {
         if (persons.filter(p => p.name === person.name).length > 0) {
           if (window.confirm(`Delete ${person.name}?`)) {
-            console.log(`Deleting person with id ${person.id}`)
             deletePerson(person.id)
               .then(response => console.log(`Successfully deleted ${person.name}`))
             // update 'persons' with 'setPersons'

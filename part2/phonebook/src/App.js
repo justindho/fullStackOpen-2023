@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
 
 import { getAll } from './services/persons'
 
@@ -13,6 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [newMessage, setNewMessage] = useState(null)
 
   // get data from server
   useEffect(() => {
@@ -35,6 +37,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
+      <Notification message={newMessage} />
+
       <Filter filter={newFilter} handleFilterChange={handleFilterChange} />
 
       <h3>Add a new</h3>
@@ -46,6 +50,7 @@ const App = () => {
         handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
+        setNewMessage={setNewMessage}
       />
 
       <h3>Numbers</h3>
