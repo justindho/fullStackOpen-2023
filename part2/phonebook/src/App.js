@@ -50,7 +50,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} filter={newFilter} />
+      <Persons persons={persons} setPersons={setPersons} filter={newFilter} />
     </div>
   )
 }

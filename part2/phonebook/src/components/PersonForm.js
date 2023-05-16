@@ -10,7 +10,8 @@ const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, 
     } else {
       const newPerson = {
         name: newName,
-        number: newNumber
+        number: newNumber,
+        id: persons.length + 1
       }
 
       create(newPerson)
