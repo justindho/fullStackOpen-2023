@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import Notification from './components/Notification'
+import SuccessMessage from './components/SuccessMessage'
+import ErrorMessage from './components/ErrorMessage'
 
 import { getAll } from './services/persons'
 
@@ -14,7 +15,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [newMessage, setNewMessage] = useState(null)
+  const [newSuccessMessage, setNewSuccessMessage] = useState(null)
+  const [newErrorMessage, setNewErrorMessage] = useState(null)
 
   // get data from server
   useEffect(() => {
@@ -37,7 +39,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification message={newMessage} />
+      <SuccessMessage message={newSuccessMessage} />
+      <ErrorMessage message={newErrorMessage} />
 
       <Filter filter={newFilter} handleFilterChange={handleFilterChange} />
 
@@ -50,12 +53,18 @@ const App = () => {
         handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
-        setNewMessage={setNewMessage}
+        setNewSuccessMessage={setNewSuccessMessage}
       />
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} setPersons={setPersons} filter={newFilter} />
+      <Persons
+        persons={persons}
+        setPersons={setPersons}
+        filter={newFilter}
+        setNewSuccessMessage={setNewSuccessMessage}
+        setNewErrorMessage={setNewErrorMessage}
+      />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { getAll, deletePerson } from "../services/persons"
 
-const Person = ({person, setPersons}) => {
+const Person = ({person, setPersons, setNewSuccessMessage, setNewErrorMessage}) => {
   const doDelete = (event) => {
     event.preventDefault()
     getAll()
@@ -8,12 +8,30 @@ const Person = ({person, setPersons}) => {
         if (persons.filter(p => p.name === person.name).length > 0) {
           if (window.confirm(`Delete ${person.name}?`)) {
             deletePerson(person.id)
-              .then(response => console.log(`Successfully deleted ${person.name}`))
+              .then(response => {
+                console.log(`Successfully deleted ${person.name}`)
+                setNewSuccessMessage(`Successfully deleted ${person.name}`)
+                setTimeout(() => {
+                  setNewSuccessMessage(null)
+                }, 5000)
+              })
+              .catch(error => {
+                console.log(error)
+                setNewErrorMessage(`Information of ${person.name} has already been removed from server`)
+                setTimeout(() => {
+                  setNewErrorMessage(null)
+                }, 5000)
+                setPersons(persons)
+              })
             // update 'persons' with 'setPersons'
             setPersons(persons.filter(p => p.id !== person.id))
           }
         } else {
-          alert(`${person.name} has already been deleted`)
+          setNewErrorMessage(`Information of ${person.name} has already been removed from server`)
+          setTimeout(() => {
+            setNewErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== person.id))
         }
       })
   }
