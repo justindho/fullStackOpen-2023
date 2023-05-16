@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { getAll } from './services/countries'
-import Result from './components/Result'
+import Results from './components/Results'
 
 const App = () => {
   const [countries, setCountries] = useState('')
@@ -38,7 +38,7 @@ const App = () => {
           />  
         )}
       </ul> */}
-      <Result results={results}/>
+      <Results results={results}/>
     </div>
   );
 }
