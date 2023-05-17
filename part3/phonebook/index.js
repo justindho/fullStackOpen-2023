@@ -9,9 +9,9 @@ const Person = require('./models/person')
 const app = express()
 
 app.use(cors())
-app.use(express.json())
 app.use(express.static('build'))
-const morganMiddleware = (tokens, req, res) => {
+app.use(express.json())
+const requestLogger = (tokens, req, res) => {
   return [
     tokens.method(req, res),
     tokens.url(req, res),
@@ -21,7 +21,19 @@ const morganMiddleware = (tokens, req, res) => {
     JSON.stringify(req.body)
   ].join(' ')
 }
-app.use(morgan(morganMiddleware))
+app.use(morgan(requestLogger))
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+  next(error)
+}
+
+// This needs to be the last loaded middleware.
+app.use(errorHandler)
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -47,6 +59,19 @@ app.post('/api/persons', (request, response) => {
       error: 'Number is missing'
     })
   }
+
+  if (Person.findById(request.params.id)) {
+    const body = request.body
+    const person = {
+      name: body.name,
+      number: body.number,
+    }
+    Person.findByIdAndUpdate(request.params.id, person,{ new: true })
+      .then(updatedPerson => {
+        response.json(updatedPerson)
+      })
+      .catch(error => next(error))
+  }
   
   const newPerson = new Person({
     id: Math.floor(Math.random() * 1000),
@@ -59,10 +84,13 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
-app.delete('/api/person/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-  response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+  console.log(`Deleting person`)
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
