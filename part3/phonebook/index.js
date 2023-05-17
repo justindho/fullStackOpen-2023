@@ -3,7 +3,17 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
+const morganMiddleware = (tokens, req, res) => {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms',
+    JSON.stringify(req.body)
+  ].join(' ')
+}
+app.use(morgan(morganMiddleware))
 
 
 let persons = [
@@ -69,7 +79,6 @@ app.post('/api/persons', (request, response) => {
     number: request.body.number
   }
   persons = persons.concat(newPerson)
-  console.log(newPerson)
   response.json(newPerson)
 })
 
