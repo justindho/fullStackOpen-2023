@@ -1,6 +1,6 @@
 import { create, update } from '../services/persons'
 
-const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, handleNumberChange, setNewSuccessMessage}) => {
+const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, handleNumberChange, setNewSuccessMessage, setNewErrorMessage}) => {
 
   const addPhonebookEntry = (event) => {
     event.preventDefault()
@@ -16,7 +16,6 @@ const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, 
       }
       update(foundPerson.id, updatedPerson)
         .then(response => {
-          console.log(response)
           setNewSuccessMessage(`Updated ${response.data.name}`)
           setTimeout(() => {
             setNewSuccessMessage(null)
@@ -34,10 +33,15 @@ const PersonForm = ({persons, setPersons, newName, handleNameChange, newNumber, 
 
       create(newPerson)
         .then(response => {
-          console.log(response)
           setNewSuccessMessage(`Added ${response.data.name}`)
           setTimeout(() => {
             setNewSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setNewErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setNewErrorMessage(null)
           }, 5000)
         })
   

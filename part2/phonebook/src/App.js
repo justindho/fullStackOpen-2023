@@ -9,9 +9,7 @@ import ErrorMessage from './components/ErrorMessage'
 import { getAll } from './services/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
@@ -54,6 +52,7 @@ const App = () => {
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
         setNewSuccessMessage={setNewSuccessMessage}
+        setNewErrorMessage={setNewErrorMessage}
       />
 
       <h3>Numbers</h3>

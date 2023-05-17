@@ -23,18 +23,6 @@ const requestLogger = (tokens, req, res) => {
 }
 app.use(morgan(requestLogger))
 
-const errorHandler = (error, request, response, next) => {
-  console.log(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  }
-  next(error)
-}
-
-// This needs to be the last loaded middleware.
-app.use(errorHandler)
-
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
@@ -47,45 +35,40 @@ app.get('/api/persons/:id', (request, response) => {
   })
 })
 
-app.post('/api/persons', (request, response) => {
-  if (!request.body.name) {
-    return response.status(400).json({
-      error: 'Name is missing'
+app.post('/api/persons', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then(result => {
+      if (result) {
+        const body = request.body
+        const person = {
+          name: body.name,
+          number: body.number,
+        }
+        Person.findByIdAndUpdate(request.params.id, person,{ new: true })
+          .then(updatedPerson => {
+            response.json(updatedPerson)
+          })
+          .catch(error => next(error))
+      } else {
+        const newPerson = new Person({
+          id: Math.floor(Math.random() * 1000),
+          name: request.body.name,
+          number: request.body.number
+        })
+      
+        newPerson.save()
+          .then(savedPerson => {
+            response.json(savedPerson)
+          })
+          .catch(error => {
+            next(error)
+          })
+      }
     })
-  }
-  
-  if (!request.body.number) {
-    return response.status(400).json({
-      error: 'Number is missing'
-    })
-  }
-
-  if (Person.findById(request.params.id)) {
-    const body = request.body
-    const person = {
-      name: body.name,
-      number: body.number,
-    }
-    Person.findByIdAndUpdate(request.params.id, person,{ new: true })
-      .then(updatedPerson => {
-        response.json(updatedPerson)
-      })
-      .catch(error => next(error))
-  }
-  
-  const newPerson = new Person({
-    id: Math.floor(Math.random() * 1000),
-    name: request.body.name,
-    number: request.body.number
-  })
-
-  newPerson.save().then(savedPerson => {
-    response.json(savedPerson)
-  })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-  console.log(`Deleting person`)
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
       response.status(204).end()
@@ -99,6 +82,24 @@ app.get('/info', (request, response) => {
     response.send(text)
   })
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  if (error.name.startsWith('CastError')) {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name.startsWith('ValidationError')) {
+    return response.status(400).json({ error: error.message })
+  }
+  next(error)
+}
+
+// This needs to be the last loaded middleware.
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
