@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { getWeatherData } from '../services/weather'
 
 const Result = ({country}) => {
   const [isVisible, setIsVisible] = useState(false)
+  const [weather, setWeather] = useState(null)
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible)
@@ -17,6 +19,9 @@ const Result = ({country}) => {
       </div>
     )
   }
+
+  getWeatherData(country.latlng[0], country.latlng[1])
+    .then(response => setWeather(response))
 
   return (
     <div>
@@ -34,6 +39,10 @@ const Result = ({country}) => {
       </ul>
 
       <img src={country.flags.png} alt={country.flags.alt} />
+
+      <h2>Weather in {country.capital}</h2>
+      {weather !== null && <p>temperature {weather.current.temp} Celsius</p>}
+      {weather !== null && <p>wind {weather.current.wind_speed} m/s</p>}
     </div>
   )
 }

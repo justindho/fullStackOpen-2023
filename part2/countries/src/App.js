@@ -30,14 +30,6 @@ const App = () => {
           onChange={handleCountriesChange}
         />
       </p>
-      {/* <ul>
-        {results.map(result => 
-          <Result
-            key={result.name.common}
-            country={result.name.common}
-          />  
-        )}
-      </ul> */}
       <Results results={results}/>
     </div>
   );
