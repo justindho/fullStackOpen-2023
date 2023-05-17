@@ -30,8 +30,8 @@ if (process.argv.length === 3) {
   })
 } else {
   const person = new Person({
-    name: 'Anna',
-    number: '040-1234556',
+    name: process.argv[3],
+    number: process.argv[4],
   })
   
   person.save().then(result => {
