@@ -48,21 +48,15 @@ app.post('/api/persons', (request, response) => {
     })
   }
   
-  if (persons.find(p => p.name === request.body.name)) {
-    return response.status(400).json({
-      error: 'Name must be unique'
-    })
-  }
-  
-  const id = Math.floor(Math.random() * 1000)
-  const newPerson = {
-    id: id,
+  const newPerson = new Person({
+    id: Math.floor(Math.random() * 1000),
     name: request.body.name,
     number: request.body.number
-  }
+  })
 
-  persons = persons.concat(newPerson)
-  response.json(newPerson)
+  newPerson.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 app.delete('/api/person/:id', (request, response) => {
@@ -72,8 +66,10 @@ app.delete('/api/person/:id', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-  const text = `Phonebook has info for ${persons.length} people<br/><br/>${new Date()}`
-  response.send(text)
+  Person.find({}).then(persons => {
+    const text = `Phonebook has info for ${persons.length} people<br/><br/>${new Date()}`
+    response.send(text)
+  })
 })
 
 const PORT = process.env.PORT
