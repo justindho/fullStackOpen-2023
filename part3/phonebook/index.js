@@ -55,7 +55,7 @@ app.post('/api/persons', (request, response, next) => {
           name: request.body.name,
           number: request.body.number
         })
-      
+
         newPerson.save()
           .then(savedPerson => {
             response.json(savedPerson)
@@ -70,7 +70,7 @@ app.post('/api/persons', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
