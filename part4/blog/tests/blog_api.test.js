@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 
@@ -28,4 +27,24 @@ test('returned notes have a unique identifier property called "id"', async () =>
   const response = await api.get('/api/blogs')
   const blog = response.body[0]
   expect(blog.id).toBeDefined()
+})
+
+test('POST request creates a new blog post', async () => {
+  const newBlog = {
+    title: 'title',
+    author: 'author',
+    url: 'url',
+    likes: 0,
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const contents = blogsAtEnd.map(blog => blog.title)
+  expect(contents).toContain('title')
 })
