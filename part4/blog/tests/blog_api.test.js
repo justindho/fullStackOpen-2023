@@ -48,3 +48,20 @@ test('POST request creates a new blog post', async () => {
   const contents = blogsAtEnd.map(blog => blog.title)
   expect(contents).toContain('title')
 })
+
+test('"likes" property defaults to 0 if not specified', async () => {
+  const newBlog = {
+    title: 'title',
+    author: 'author',
+    url: 'url',
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const retrievedBlog = blogsAtEnd.find(blog => blog.title === 'title')
+  expect(retrievedBlog.likes).toBe(0)
+})
