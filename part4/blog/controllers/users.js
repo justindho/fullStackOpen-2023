@@ -13,11 +13,6 @@ usersRouter.post('/', async (request, response) => {
     response.status(400).send({ error: 'Password must be at least 3 characters long' })
   }
 
-  const users = await User.find({})
-  if (users.find(user => user.username === username)) {
-    response.status(400).send({ error: 'Username already exists. Username must be unique.' })
-  }
-
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
@@ -33,7 +28,7 @@ usersRouter.post('/', async (request, response) => {
 })
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs')
   response.status(200).json(users)
 })
 
