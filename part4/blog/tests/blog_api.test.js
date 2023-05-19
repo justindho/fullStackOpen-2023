@@ -23,3 +23,9 @@ test('all notes are returned', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
+
+test('returned notes have a unique identifier property called "id"', async () => {
+  const response = await api.get('/api/blogs')
+  const blog = response.body[0]
+  expect(blog.id).toBeDefined()
+})
