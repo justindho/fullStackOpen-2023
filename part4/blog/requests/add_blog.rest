@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWQiOiI2NDY2ZjY0MGIyODYwZTIyZGRmN2U1MGMiLCJpYXQiOjE2ODQ0Njk1NTB9.6Z4Aq1wmf_8dq9870SZcyCuNvIZx0auEBdjrqctmuCc
 
 {
-    "title": "Blog 2",
+    "title": "Blog 3",
     "author": "Justin Ho",
-    "url": "www.myblog2.com",
+    "url": "www.myblog3.com",
     "likes": 0
 }
