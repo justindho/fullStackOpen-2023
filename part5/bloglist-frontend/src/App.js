@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -81,7 +81,7 @@ const App = () => {
 
       <Notification type={messageType} message={message} />
 
-      {!user && 
+      {!user &&
         <Togglable buttonLabel='log in'>
           <LoginForm
             username={username}

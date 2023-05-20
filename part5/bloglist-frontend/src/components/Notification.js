@@ -1,4 +1,6 @@
-const Notification = ({type, message}) => {
+import PropTypes from 'prop-types'
+
+const Notification = ({ type, message }) => {
   if (message === null) {
     return null
   }
@@ -12,6 +14,11 @@ const Notification = ({type, message}) => {
       {message}
     </div>
   )
+}
+
+Notification.propTypes = {
+  type: PropTypes.string,
+  message: PropTypes.string
 }
 
 export default Notification

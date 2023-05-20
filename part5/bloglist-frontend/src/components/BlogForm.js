@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import blogService from '../services/blogs'
 
@@ -39,7 +40,6 @@ const BlogForm = ({
       setMessageType(null)
       setMessage(null)
     }, 5000)
-    
   }
 
   return (
@@ -69,6 +69,14 @@ const BlogForm = ({
       </form>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  setBlogs: PropTypes.func,
+  setMessageType: PropTypes.func,
+  setMessage: PropTypes.func,
+  blogs: PropTypes.array,
+  blogFormRef: PropTypes.object
 }
 
 export default BlogForm
