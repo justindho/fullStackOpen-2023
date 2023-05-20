@@ -68,6 +68,13 @@ const App = () => {
     setBlogs(blogs.map(b => b.id === blog.id ? updatedBlog : b))
   }
 
+  const remove = async (blog) => {
+    if (window.confirm(`Remove blog "${blog.title}"?`)) {
+      await blogService.remove(blog)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    }
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -104,7 +111,12 @@ const App = () => {
 
           <ul>
             {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
-              <Blog key={blog.id} blog={blog} like={() => like(blog)} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                like={() => like(blog)}
+                canRemove={user && blog.user.username === user.username}
+                remove={() => remove(blog)} />
             )}
           </ul>
         </div>
