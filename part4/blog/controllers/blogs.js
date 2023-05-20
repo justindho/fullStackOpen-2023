@@ -9,7 +9,6 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
   const user = request.user
-  console.log('user', user)
 
   const blog = new Blog({
     title: body.title,
@@ -18,11 +17,13 @@ blogsRouter.post('/', async (request, response) => {
     likes: body.likes,
     user: user.id
   })
-  const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog._id)
+  let createdBlog = await blog.save()
+  user.blogs = user.blogs.concat(createdBlog._id)
   await user.save()
 
-  response.status(201).json(savedBlog)
+  createdBlog = await Blog.findById(createdBlog._id).populate('user')
+
+  response.status(201).json(createdBlog)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {

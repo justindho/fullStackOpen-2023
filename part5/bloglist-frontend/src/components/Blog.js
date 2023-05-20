@@ -14,7 +14,7 @@ const Blog = ({blog}) => {
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
-  const toggleVisibility = (event) => {
+  const toggleVisibility = () => {
     setVisible(!visible)
   }
 
@@ -29,7 +29,7 @@ const Blog = ({blog}) => {
         <button onClick={toggleVisibility}>hide</button>
         <p>{blog.url}</p>
         <p>likes {blog.likes} <button>like</button></p>
-        <p>{blog.username}</p>
+        <p>{blog.user.username}</p>
       </div>
     </div>
   )
