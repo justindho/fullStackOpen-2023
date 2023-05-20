@@ -1,6 +1,8 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({blog}) => {
+import blogService from '../services/blogs'
+
+const Blog = ({blog, like}) => {
   const [visible, setVisible] = useState(false)
 
   const blogStyle = {
@@ -28,7 +30,7 @@ const Blog = ({blog}) => {
       <div style={showWhenVisible}>
         <button onClick={toggleVisibility}>hide</button>
         <p>{blog.url}</p>
-        <p>likes {blog.likes} <button>like</button></p>
+        <p>likes {blog.likes} <button onClick={like}>like</button></p>
         <p>{blog.user.username}</p>
       </div>
     </div>
