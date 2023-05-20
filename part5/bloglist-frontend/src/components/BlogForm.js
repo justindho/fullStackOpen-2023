@@ -51,21 +51,24 @@ const BlogForm = ({
           title: <input
             value={title}
             onChange={event => setTitle(event.target.value)}
+            id='title-input'
           />
         </div>
         <div>
           author: <input
             value={author}
             onChange={event => setAuthor(event.target.value)}
+            id='author-input'
           />
         </div>
         <div>
           url: <input
             value={url}
             onChange={event => setUrl(event.target.value)}
+            id='url-input'
           />
         </div>
-        <button type='submit'>Create</button>
+        <button type='submit' id='create-button'>Create</button>
       </form>
     </div>
   )

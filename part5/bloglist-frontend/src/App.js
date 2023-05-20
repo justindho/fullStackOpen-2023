@@ -77,7 +77,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
 
       <Notification type={messageType} message={message} />
 
