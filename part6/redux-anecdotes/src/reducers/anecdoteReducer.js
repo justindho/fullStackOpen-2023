@@ -27,7 +27,7 @@ export const voteFor = (anecdote) => {
   }
 }
 
-export const create = (content) => {
+export const createAnecdote = (content) => {
   return {
     type: 'NEW_ANECDOTE',
     payload: {
