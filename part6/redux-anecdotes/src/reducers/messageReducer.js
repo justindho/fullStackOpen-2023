@@ -17,4 +17,19 @@ const messageSlice = createSlice({
 })
 
 export const { setCreatedAnecdoteMessage, setVotedMessage, removeMessage } = messageSlice.actions
+
+export const setCreatedAnecdoteNotification = (anecdote, seconds) => {
+  return async dispatch => {
+    dispatch(setCreatedAnecdoteMessage(anecdote))
+    setTimeout(() => dispatch(removeMessage()), seconds * 1000)
+  }
+}
+
+export const setVotedAnecdoteNotification = (anecdote, seconds) => {
+  return async dispatch => {
+    dispatch(setVotedMessage(anecdote.content))
+    setTimeout(() => dispatch(removeMessage()), seconds * 1000)
+  }
+}
+
 export default messageSlice.reducer
