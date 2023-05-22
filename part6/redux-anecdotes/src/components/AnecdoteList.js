@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { vote } from '../reducers/anecdoteReducer'
+import { voteForAnecdote } from '../reducers/anecdoteReducer'
 import { removeMessage, setVotedMessage } from '../reducers/messageReducer'
 
 const AnecdoteList = () => {
@@ -9,7 +9,7 @@ const AnecdoteList = () => {
   )
 
   const voteFor = (anecdote) => {
-    dispatch(vote(anecdote))
+    dispatch(voteForAnecdote(anecdote))
     dispatch(setVotedMessage(anecdote.content))
     setTimeout(() => dispatch(removeMessage()), 5000)
   }
