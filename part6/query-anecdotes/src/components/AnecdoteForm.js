@@ -1,12 +1,16 @@
 import { useMutation, useQueryClient } from "react-query"
 import { createAnecdote } from "../requests"
+import { useNotificationDispatch } from "../NotificationContext"
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
 
+  const notificationDispatch = useNotificationDispatch()
+
   const newAnecdoteMutation = useMutation(createAnecdote, {
-    onSuccess: () => {
+    onSuccess: ({ content }) => {
       queryClient.invalidateQueries('anecdotes')
+      notificationDispatch(`Created new anecdote '${content}'`)
     },
   })
 
