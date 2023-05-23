@@ -81,6 +81,13 @@ const CreateNew = (props) => {
     navigate('/')
   }
 
+  const clear = (e) => {
+    e.preventDefault()
+    content.clear()
+    author.clear()
+    info.clear()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -98,6 +105,7 @@ const CreateNew = (props) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={clear}>reset</button>
       </form>
     </div>
   )
