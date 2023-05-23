@@ -83,10 +83,14 @@ const CreateNew = (props) => {
 
   const clear = (e) => {
     e.preventDefault()
-    content.clear()
-    author.clear()
-    info.clear()
+    content.reset()
+    author.reset()
+    info.reset()
   }
+
+  const { resetContent, ...contentInput } = content
+  const { resetAuthor, ...authorInput } = author
+  const { resetInput, ...infoInput } = info
 
   return (
     <div>
@@ -94,15 +98,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...contentInput} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...authorInput} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...infoInput} />
         </div>
         <button>create</button>
         <button onClick={clear}>reset</button>
